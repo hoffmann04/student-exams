@@ -9,6 +9,9 @@ RUN apt-get update && \
 RUN pip install --upgrade pip
 
 COPY ./requirements.txt ./requirements.txt
+COPY ./entrypoint.sh ./entrypoint.sh
+
+RUN chmod +x entrypoint.sh
 
 RUN pip install -r requirements.txt
 
@@ -17,7 +20,7 @@ COPY ./app django/app
 
 WORKDIR /django/app
 
-RUN useradd preicp -m -s /bin/bash && chown -R preicp /home/preicp
+RUN useradd usertest -m -s /bin/bash && chown -R usertest /home/usertest
 
 EXPOSE 8000
 

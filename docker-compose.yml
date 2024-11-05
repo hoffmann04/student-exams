@@ -17,6 +17,8 @@ services:
       - ./app:/django/app
     ports:
       - "8000:8000"
+    entrypoint:
+      - /entrypoint.sh
 
   db:
     restart: always
