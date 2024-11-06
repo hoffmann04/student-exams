@@ -15,7 +15,7 @@ para facilitar o desenvolvimento.
 
 Com o projeto rodando, para acessar o container do docker, pode-se abrir outro terminal e rodar:
 
-`docker exec -it medway-api -- bash`
+`docker exec -it medway-api bash`
 
 Uma vez dentro do container, pode-se criar um usuário/estudante com o comando:
 
