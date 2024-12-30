@@ -31,6 +31,7 @@ class ExamSubmission(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        # Ensure that the student can only submit once for a given exam.
         constraints = [
             models.UniqueConstraint('exam', 'student', name='unique_exam_student'),
         ]
@@ -40,6 +41,7 @@ class ExamSubmission(models.Model):
 
 class Answer(models.Model):
     submission = models.ForeignKey(ExamSubmission, on_delete=models.CASCADE, related_name='answers')
+    # Here it can also be used the ExamQuestion model instead of Question directly
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     selected_alternative_id = models.IntegerField()  # Stores the alternative selected by the user
     is_correct = models.BooleanField(default=False)

@@ -115,6 +115,8 @@ class SubmissionResultSerializer(serializers.ModelSerializer):
             correct_alternative = answer.question.alternatives.filter(is_correct=True).first()
             selected_alternative = answer.question.alternatives.filter(id=answer.selected_alternative_id).first()
 
+            # Let's return the selected and the correct answer content
+            # This data can be used in the front-end to help the student know the correct answer
             answers_list.append({
                 "question": answer.question.content,
                 "selected_alternative_id": answer.selected_alternative_id,
