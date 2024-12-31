@@ -1,7 +1,11 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import Exam, ExamSubmission
-from .serializers import AllExamsSerializer, ExamSerializer, ExamSubmissionSerializer, SubmissionResultSerializer
+from .serializers import (AllExamsSerializer, 
+                          ExamSerializer, 
+                          ExamSubmissionSerializer, 
+                          SubmissionResultSerializer, 
+                          AllSubmissionsSerializer)
 from rest_framework.views import APIView
 from django_filters import rest_framework as filters
 from rest_framework import status
@@ -10,7 +14,7 @@ from drf_spectacular.utils import extend_schema
 # Create your views here.
 
 
-class AllExams(generics.ListAPIView):
+class AllExamsView(generics.ListAPIView):
     serializer_class = AllExamsSerializer
     queryset = Exam.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
@@ -68,3 +72,9 @@ class SubmissionResultByStudentAndExamView(APIView):
                 {"detail": "Submission not found for the given student and exam."},
                 status=status.HTTP_404_NOT_FOUND
             )
+
+class AllSubmissionsView(generics.ListAPIView):
+    serializer_class = AllSubmissionsSerializer
+    queryset = ExamSubmission.objects.all()
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('id',)

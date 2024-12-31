@@ -23,6 +23,12 @@ Then you can use the created credentials to access the Django admin: http://0.0.
 
 2. The sudent must be able to get the results of the submitted exam. The results must have the amount of questions that the student got right and also the percentage of correct answers.
 
+## Development approach:
+
+The idea was to keep it simple. It was created the models to save a student submission and its answers, the needed serializers and views. It was also created some test scenarios to cover some parts of the feature that was created.
+
+It could be used a separate `api` folder to add the REST API related things (url.py, views.py, etc), but for the sake of simplicity it was used the pre existent files (views.py, serializers.py, etc) that the project already had.
+
 ## How to use:
 
 To make it easier to test it was installed in this project the Djando Spectacular lib.
@@ -60,7 +66,7 @@ All endpoints are listed below:
 The tests are in the 'tests.py' file. It was covered the following scenarios:
 
 1. Success in the exam submission.
-2. Test suplicated submission.
+2. Test duplicated submission.
 3. Test question that do not belong to the exam.
 4. Test submission results.
 
@@ -73,3 +79,4 @@ It can be done a lot of other tests, like:
 3. Test with an invalid or non-existent selected_alternative and ensure proper error response.
 4. Test scenarios to ensure correct percentage calculation, e.g., no correct answers, all correct answers, or partial correctness.
 5. Ensure the endpoint correctly handles cases where a student hasn’t submitted answers yet.
+6. Test a submission containing duplicated questions in the answer dict in the resquest.

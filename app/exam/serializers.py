@@ -135,3 +135,8 @@ class SubmissionResultSerializer(serializers.ModelSerializer):
         if total_questions == 0:
             return 0
         return round((total_correct / total_questions) * 100, 2)
+
+class AllSubmissionsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamSubmission
+        fields = ['id', 'exam', 'student', 'submitted_at']
