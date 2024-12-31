@@ -59,12 +59,46 @@ class ExamSubmissionSerializer(serializers.ModelSerializer):
         model = ExamSubmission
         fields = ['student_id', 'exam_id', 'answers']
 
+    def find_duplicated_questions(self, answer_question_ids_list):
+        # Set to store already seen ids
+        seen = set()
+
+        # List to store duplicates
+        duplicates = []
+
+        for question_id in answer_question_ids_list:
+            if question_id in seen:
+                duplicates.append(question_id)
+            else:
+                seen.add(question_id)
+
+        return duplicates
+
+
     def validate(self, data):
         # Check if a submission already exists for the student and exam
         student = data['student']
         exam = data['exam']
         if ExamSubmission.objects.filter(student=student, exam=exam).exists():
             raise ValidationError("A submission already exists for this student and exam.")
+
+        # Validate if there are duplicated questions in the request
+        answer_question_ids_list = [answer['question'].id for answer in data['answers']]
+        duplicated_question_ids = self.find_duplicated_questions(answer_question_ids_list)
+        if duplicated_question_ids:
+            raise ValidationError(f"Questions {duplicated_question_ids} are duplicated.")
+
+        # Validate if alternative belong to the question
+        wrong_alternatives_list = list()
+        for answer in data['answers']:
+            question = answer['question']
+            alternative = Alternative.objects.get(id=answer['selected_alternative_id'])
+
+            if alternative.question.id != question.id:
+                wrong_alternatives_list.append(f"Alternative with id {alternative.id} does not belong to question with id {question.id}.")
+
+        if wrong_alternatives_list:
+            raise ValidationError(wrong_alternatives_list)
 
         # Validate if the questions in the answers belong to the exam
         exam_questions = set(exam.questions.values_list('id', flat=True))
